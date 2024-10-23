@@ -1,0 +1,26 @@
+{
+    "name": "com.radish.core",
+    "displayName": "Radish Core Library",
+    "author": {
+      "name": "Audrey Castillo",
+      "email": "valax321@gmail.com",
+      "url": "https://audrey.zone"
+    },
+    "version": "1.0.0",
+    "unity": "6000.0",
+    "description": "Common gameplay and editor code for Radish Projects. Adapted from com.radish.common-tools.",
+    "keywords": [
+      "logging",
+      "collections",
+      "gizmos",
+      "debug",
+      "serialization"
+    ],
+    "license": "MIT",
+    "category": "Editor",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Valax321/Radish.Core"
+    },
+    "dependencies": {}
+}

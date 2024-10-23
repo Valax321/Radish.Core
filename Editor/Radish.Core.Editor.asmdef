@@ -1,0 +1,18 @@
+{
+    "name": "Radish.Core.Editor",
+    "rootNamespace": "Radish",
+    "references": [
+        "GUID:8bdea64740185594d97902a78bd70061"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
