@@ -66,5 +66,10 @@ namespace Radish
         }
 
         #endregion
+
+        public static Vector3 AsVec3(this Color c)
+        {
+            return new Vector3(c.r, c.g, c.b);
+        }
     }
 }
