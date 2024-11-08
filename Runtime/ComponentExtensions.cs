@@ -20,6 +20,9 @@ namespace Radish
             return c;
         }
 
+        public static T GetOrCreateComponent<T>(this Component c, HideFlags defaultFlags = HideFlags.None)
+            where T : Component => GetOrCreateComponent<T>(c.gameObject);
+
         public static GameObject GetOrCreateNamedChild(this GameObject go, string name,
             HideFlags defaultFlags = HideFlags.None)
         {
