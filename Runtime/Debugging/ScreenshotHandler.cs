@@ -8,6 +8,8 @@ namespace Radish.Debugging
 {
     public class ScreenshotHandler : MonoBehaviour
     {
+        [SerializeField] private KeyCode m_ScreenshotKey = KeyCode.F9;
+        
         private static readonly ILogger Logger = LogManager.GetLoggerForType(typeof(ScreenshotHandler));
 
         private static string GetScreenshotRootDir()
@@ -19,7 +21,7 @@ namespace Radish.Debugging
         
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F9))
+            if (Input.GetKeyDown(m_ScreenshotKey))
             {
                 var rootPath = GetScreenshotRootDir();
                 Directory.CreateDirectory(Path.Combine(rootPath, "Screenshots"));
