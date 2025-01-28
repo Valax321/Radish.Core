@@ -50,7 +50,7 @@ namespace Radish
             bus.Unsubscribe(callback);
         }
 
-        private EventBus<TMessage> GetOrCreateBus<TMessage>() where TMessage : struct, IEventBusMessage
+        public EventBus<TMessage> GetOrCreateBus<TMessage>() where TMessage : struct, IEventBusMessage
         {
             if (!m_MessageBusLookup.ContainsKey(typeof(TMessage)))
             {
