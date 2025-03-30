@@ -24,8 +24,8 @@ namespace Radish
         
         private readonly Dictionary<TStateKey, TState> m_Lookup = new();
         private TStateKey m_CurrentStateKey;
-        private readonly Action<TState> m_OnEnterMethod;
-        private readonly Action<TState> m_OnExitMethod;
+        private readonly Action<TState, TStateKey> m_OnEnterMethod;
+        private readonly Action<TState, TStateKey> m_OnExitMethod;
         
         /// <summary>
         /// Creates a new state machine.
@@ -37,8 +37,8 @@ namespace Radish
         /// <param name="onExitMethod">Callback for deactivating a state when it becomes inactive.</param>
         public StateMachine(IEnumerable<TState> states, TStateKey initialState,
             Func<TState, TStateKey> keyGetter,
-            Action<TState> onEnterMethod,
-            Action<TState> onExitMethod)
+            Action<TState, TStateKey> onEnterMethod,
+            Action<TState, TStateKey> onExitMethod)
         {
             m_CurrentStateKey = initialState;
             m_OnEnterMethod = onEnterMethod;
@@ -59,9 +59,10 @@ namespace Radish
             if (newState.Equals(m_CurrentStateKey))
                 return;
 
-            m_OnExitMethod(current);
+            var oldStateKey = m_CurrentStateKey;
+            m_OnExitMethod(current, newState);
             m_CurrentStateKey = newState;
-            m_OnEnterMethod(current);
+            m_OnEnterMethod(current, oldStateKey);
         }
     }
 }
