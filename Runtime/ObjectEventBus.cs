@@ -9,11 +9,32 @@ using ILogger = Radish.Logging.ILogger;
 
 namespace Radish
 {
-    public sealed class ObjectEventBus : MonoBehaviour
+    public class ObjectEventBus : MonoBehaviour
     {
 #if DEBUG_MESSAGES
         private static readonly ILogger Logger = LogManager.GetLoggerForType(typeof(ObjectEventBus));
 #endif
+
+        public class Handle : IDisposable
+        {
+            internal Handle(Action callback)
+            {
+                _callback = callback;
+            }
+            
+            private Action _callback;
+
+            private void Release()
+            {
+                _callback?.Invoke();
+                _callback = null;
+            }
+
+            public void Dispose()
+            {
+                Release();
+            }
+        }
         
         private readonly Dictionary<Type, object> m_MessageBusLookup = new();
         private readonly Dictionary<Type, string> m_ProfilerSampleNames = new();
@@ -36,10 +57,11 @@ namespace Radish
         }
 
         [PublicAPI]
-        public void Subscribe<TMessage>(EventBus<TMessage>.OnMessage callback) where TMessage : struct, IEventBusMessage
+        public Handle Subscribe<TMessage>(EventBus<TMessage>.OnMessage callback) where TMessage : struct, IEventBusMessage
         {
             var bus = GetOrCreateBus<TMessage>();
             bus.Subscribe(callback);
+            return new Handle(() => Unsubscribe(callback));
         }
 
         [PublicAPI]
