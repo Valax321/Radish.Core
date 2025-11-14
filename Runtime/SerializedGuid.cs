@@ -40,6 +40,11 @@ namespace Radish
             m_Data = null;
         }
 
+        public static implicit operator Guid(in SerializedGuid s)
+        {
+            return s.value;
+        }
+
         public bool Equals(SerializedGuid other)
         {
             return value.Equals(other.value);
