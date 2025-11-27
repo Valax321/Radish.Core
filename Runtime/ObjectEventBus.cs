@@ -15,7 +15,7 @@ namespace Radish
         private static readonly ILogger Logger = LogManager.GetLoggerForType(typeof(ObjectEventBus));
 #endif
 
-        public class Handle : IDisposable
+        public struct Handle : IDisposable
         {
             internal Handle(Action callback)
             {
