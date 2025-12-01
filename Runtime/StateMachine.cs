@@ -21,8 +21,8 @@ namespace Radish
         /// Enumerable collection of all states in the state machine.
         /// </summary>
         public IEnumerable<TState> states => m_Lookup.Values;
-        
-        private readonly Dictionary<TStateKey, TState> m_Lookup = new();
+
+        private readonly Dictionary<TStateKey, TState> m_Lookup;
         private TStateKey m_CurrentStateKey;
         private readonly Action<TState, TStateKey> m_OnEnterMethod;
         private readonly Action<TState, TStateKey> m_OnExitMethod;
@@ -38,8 +38,13 @@ namespace Radish
         public StateMachine(IEnumerable<TState> states, TStateKey initialState,
             Func<TState, TStateKey> keyGetter,
             Action<TState, TStateKey> onEnterMethod,
-            Action<TState, TStateKey> onExitMethod)
+            Action<TState, TStateKey> onExitMethod,
+            IEqualityComparer<TStateKey> comparer = null)
         {
+            m_Lookup = comparer is not null 
+                ? new Dictionary<TStateKey, TState>(comparer) 
+                : new Dictionary<TStateKey, TState>();
+            
             m_CurrentStateKey = initialState;
             m_OnEnterMethod = onEnterMethod;
             m_OnExitMethod = onExitMethod;
