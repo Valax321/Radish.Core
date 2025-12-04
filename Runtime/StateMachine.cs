@@ -16,7 +16,9 @@ namespace Radish
         /// The currently active state.
         /// </summary>
         public TState current => m_Lookup[m_CurrentStateKey];
-        
+
+        protected bool isCurrentStateValid => m_Lookup.ContainsKey(m_CurrentStateKey);
+
         /// <summary>
         /// Enumerable collection of all states in the state machine.
         /// </summary>
@@ -26,7 +28,7 @@ namespace Radish
         private TStateKey m_CurrentStateKey;
         private readonly Action<TState, TStateKey> m_OnEnterMethod;
         private readonly Action<TState, TStateKey> m_OnExitMethod;
-        
+
         /// <summary>
         /// Creates a new state machine.
         /// </summary>
@@ -35,6 +37,7 @@ namespace Radish
         /// <param name="keyGetter">Method for getting a state's key. Only used at construction time.</param>
         /// <param name="onEnterMethod">Callback for activating a state when it becomes active.</param>
         /// <param name="onExitMethod">Callback for deactivating a state when it becomes inactive.</param>
+        /// <param name="comparer">Optional comparer for the state key.</param>
         public StateMachine(IEnumerable<TState> states, TStateKey initialState,
             Func<TState, TStateKey> keyGetter,
             Action<TState, TStateKey> onEnterMethod,
@@ -65,9 +68,11 @@ namespace Radish
                 return;
 
             var oldStateKey = m_CurrentStateKey;
-            m_OnExitMethod(current, newState);
+            if (isCurrentStateValid)
+                m_OnExitMethod(current, newState);
             m_CurrentStateKey = newState;
-            m_OnEnterMethod(current, oldStateKey);
+            if (isCurrentStateValid)
+                m_OnEnterMethod(current, oldStateKey);
         }
     }
 }
